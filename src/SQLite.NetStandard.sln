@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLite.NetStandard", "SQLite.NetStandard\SQLite.NetStandard.csproj", "{C0FEEBAC-8A83-4CAE-87BC-124BE960C5ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLite.NetStandard.iOS", "SQLite.NetStandard.iOS\SQLite.NetStandard.iOS.csproj", "{D50683D9-60BF-45CD-A47D-A5795DF842E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.iOS", "Demo.iOS\Demo.iOS.csproj", "{D951ADD6-20F0-4ADF-A2DC-3F11D8F3DE9D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{A105C607-F35D-4141-AFAD-C719FC1B2280}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{BCF9FF15-D413-44AE-8105-9EEACAF98D9C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0FEEBAC-8A83-4CAE-87BC-124BE960C5ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0FEEBAC-8A83-4CAE-87BC-124BE960C5ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0FEEBAC-8A83-4CAE-87BC-124BE960C5ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0FEEBAC-8A83-4CAE-87BC-124BE960C5ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D50683D9-60BF-45CD-A47D-A5795DF842E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D50683D9-60BF-45CD-A47D-A5795DF842E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D50683D9-60BF-45CD-A47D-A5795DF842E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D50683D9-60BF-45CD-A47D-A5795DF842E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D951ADD6-20F0-4ADF-A2DC-3F11D8F3DE9D}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{D951ADD6-20F0-4ADF-A2DC-3F11D8F3DE9D}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{D951ADD6-20F0-4ADF-A2DC-3F11D8F3DE9D}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
+		{D951ADD6-20F0-4ADF-A2DC-3F11D8F3DE9D}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D951ADD6-20F0-4ADF-A2DC-3F11D8F3DE9D} = {A105C607-F35D-4141-AFAD-C719FC1B2280}
+		{D50683D9-60BF-45CD-A47D-A5795DF842E4} = {BCF9FF15-D413-44AE-8105-9EEACAF98D9C}
+	EndGlobalSection
+EndGlobal
