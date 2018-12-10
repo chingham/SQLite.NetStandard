@@ -46,8 +46,8 @@ namespace SQLite {
         public static int sqlite3_column_count(sqlite3_stmt stmt) => provider.sqlite3_column_count(stmt.Handle);
         public static string sqlite3_column_name(sqlite3_stmt stmt, int column) =>
             provider.sqlite3_column_name(stmt.Handle, column);
-        public static int sqlite3_column_type(sqlite3_stmt stmt, int column) =>
-            provider.sqlite3_column_type(stmt.Handle, column);
+        public static ColumnType sqlite3_column_type(sqlite3_stmt stmt, int column) =>
+            (ColumnType)provider.sqlite3_column_type(stmt.Handle, column);
 
         public static Error sqlite3_bind_null(sqlite3_stmt stmt, int index) =>
             (Error)provider.sqlite3_bind_null(stmt.Handle, index);

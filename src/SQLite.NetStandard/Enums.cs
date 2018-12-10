@@ -184,6 +184,14 @@ namespace SQLite {
         WarningAutoIndex = Warning | (1 << 8)
     }
     
+    public enum ColumnType {
+        Integer = 1,
+        Float = 2,
+        Text = 3,
+        Blob = 4,
+        Null = 5
+    }
+    
     /*
         SQLITE_UTF8 = 1,
         SQLITE_UTF16LE = 2,
@@ -224,11 +232,6 @@ namespace SQLite {
         SQLITE_OPEN_SUBJOURNAL = 8192,
         SQLITE_OPEN_MASTER_JOURNAL = 16384,
         SQLITE_OPEN_WAL = 524288,
-        SQLITE_INTEGER = 1,
-        SQLITE_FLOAT = 2,
-        SQLITE_TEXT = 3,
-        SQLITE_BLOB = 4,
-        SQLITE_NULL = 5,
         SQLITE_INTERNAL = 2,
         SQLITE_CREATE_INDEX = 1,
         SQLITE_CREATE_TABLE = 2,
