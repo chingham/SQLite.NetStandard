@@ -8,9 +8,11 @@
     <PropertyGroup>
     	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     	<PackageId>SQLite.NetStandard</PackageId>
-    	<Version>1.0.0</Version>
+    	<Version>1.0.1</Version>
     	<Title>.NetStandard SQLite Abstraction</Title>
     	<Authors>Thomas Guzman</Authors>
+        <PackageLicenseUrl>https://github.com/chingham/SQLite.NetStandard/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/chingham/SQLite.NetStandard</PackageProjectUrl>
     </PropertyGroup>
 
 </Project>
