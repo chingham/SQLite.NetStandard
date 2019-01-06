@@ -79,6 +79,27 @@ namespace SQLite {
 
     public sealed class sqlite3 : Resource {
         internal sqlite3(IntPtr handle, Action disposing) : base(handle, disposing) { }
+        
+        public static sqlite3 Open(string path) {
+            if (path == null)
+                throw new ArgumentNullException();
+
+            const OpenFlags flags = OpenFlags.ReadWrite|
+                                    OpenFlags.Create |
+                                    OpenFlags.FullMutex |
+                                    OpenFlags.PrivateCache;
+            var result = SQLite.sqlite3_open_v2(path, out var db, flags, null);
+            Helper.ThrowIfNeeded(db, (int)result, (int)Error.OK, "Unable to open sqlite database");
+            return db;
+        }
+        public static void Close(sqlite3 db) {
+            if (db == null)
+                throw new ArgumentNullException();
+
+            var result = SQLite.sqlite3_close(db);
+            Helper.ThrowIfNeeded(db, (int)result, (int)Error.OK, "Unable to close sqlite database");
+        }
+        public void Close() => Close(this);
     }
     
     public sealed class sqlite3_stmt : Resource {
