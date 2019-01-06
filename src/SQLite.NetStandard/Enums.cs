@@ -4,17 +4,32 @@
 // ReSharper disable IdentifierTypo
 // ReSharper disable CommentTypo
 
+using System;
+
 namespace SQLite {
 
+    [Flags]
     public enum OpenFlags {
         ReadOnly = 1,
         ReadWrite = 2,
         Create = 4,
+        DeleteOnClose = 8,
+        Exclusive = 16,
+        AutoProxy = 32,
+        Uri = 64,
+        Memory = 128,
+        MainDatabase = 256,
+        TemporaryDatabase = 512,
+        TransientDatabase = 1024,
+        MainJournal = 2048,
+        TemporaryJournal = 4096,
+        SubJournal = 8192,
+        MasterJournal = 16384,
         NoMutex = 32768,
         FullMutex = 65536,
         SharedCache = 131072,
         PrivateCache = 262144,
-        Uri = 64
+        WAL = 524288
     }
 
     public enum Error {
