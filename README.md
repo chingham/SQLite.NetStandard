@@ -61,5 +61,5 @@ using (db) {
 In your platform project, reference the corresponding platform project (eg. SQLite.NetStandard.iOS on Xamarin.iOS) and initialize it before invoking your shared library code.
 
 ```csharp
-SQLite.SQLite.SetProvider(new SQLite.NetStandard.iOS.SQLiteProvider());
+SQLite.SQLite.SetProvider(new SQLite.SQLiteProvider());
 ```
