@@ -28,7 +28,7 @@ namespace SQLite {
             }
             Helper.ThrowIfNeeded(null, (int)result, (int)Error.OK, "Unable to finalize sqlite statement");
 
-            stmt.Dispose();
+            GC.SuppressFinalize(stmt);
         }
 
         public static void BindParameter(this sqlite3_stmt stmt, object parameter, int index) {
