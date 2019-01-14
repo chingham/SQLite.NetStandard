@@ -144,7 +144,7 @@ namespace SQLite {
                 var stmt = db.Prepare(query);
                 try {
                     for (var i = 0; i < query.Parameters.Count; i++)
-                        stmt.BindParameter(query.Parameters[i], i);
+                        stmt.BindParameter(query.Parameters[i], i + 1);
 
                     var result = SQLite.sqlite3_step(stmt);
                     if (result == StepResult.Row)
