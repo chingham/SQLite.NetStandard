@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using SQLite;
-using SQLite.NetStandard.iOS;
 using UIKit;
 
 namespace Blank {

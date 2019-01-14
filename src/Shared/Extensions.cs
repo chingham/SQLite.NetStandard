@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace SQLite.NetStandard.iOS {
+namespace SQLite {
     internal static class Extensions {
         static readonly Encoding encoding = Encoding.UTF8;
         
