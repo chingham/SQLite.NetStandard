@@ -1,8 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>SQLite</RootNamespace>
+        <PackageVersion>1.1.1</PackageVersion>
+        <PackageLicenseUrl>https://github.com/chingham/SQLite.NetStandard/blob/master/LICENSE</PackageLicenseUrl>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -11,8 +13,12 @@
     	<Version>1.1.0</Version>
     	<Title>.NetStandard SQLite Abstraction</Title>
     	<Authors>Thomas Guzman</Authors>
-        <PackageLicenseUrl>https://github.com/chingham/SQLite.NetStandard/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/chingham/SQLite.NetStandard</PackageProjectUrl>
     </PropertyGroup>
+
+    <ItemGroup>
+    	<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    </ItemGroup>
 
 </Project>
