@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLite.NetStandard.Desktop", "SQLite.NetStandard.Desktop\SQLite.NetStandard.Desktop.csproj", "{62290B36-60A7-409A-9611-4E6CD0C8059C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLite.NetStandard.Android", "SQLite.NetStandard.Android\SQLite.NetStandard.Android.csproj", "{EE733B23-6510-4462-909D-B53B07D704D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +36,15 @@ Global
 		{62290B36-60A7-409A-9611-4E6CD0C8059C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62290B36-60A7-409A-9611-4E6CD0C8059C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62290B36-60A7-409A-9611-4E6CD0C8059C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE733B23-6510-4462-909D-B53B07D704D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE733B23-6510-4462-909D-B53B07D704D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE733B23-6510-4462-909D-B53B07D704D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE733B23-6510-4462-909D-B53B07D704D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D951ADD6-20F0-4ADF-A2DC-3F11D8F3DE9D} = {A105C607-F35D-4141-AFAD-C719FC1B2280}
 		{D50683D9-60BF-45CD-A47D-A5795DF842E4} = {BCF9FF15-D413-44AE-8105-9EEACAF98D9C}
 		{62290B36-60A7-409A-9611-4E6CD0C8059C} = {BCF9FF15-D413-44AE-8105-9EEACAF98D9C}
+		{EE733B23-6510-4462-909D-B53B07D704D9} = {BCF9FF15-D413-44AE-8105-9EEACAF98D9C}
 	EndGlobalSection
 EndGlobal
