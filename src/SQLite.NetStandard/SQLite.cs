@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -26,8 +25,14 @@ namespace SQLite {
             db = new sqlite3(handle, true);
             return (Error)result;
         }
-        public static Error sqlite3_close(sqlite3 db) => (Error)provider.sqlite3_close(db.Handle);
-        public static Error sqlite3_close_v2(sqlite3 db) => (Error)provider.sqlite3_close_v2(db.Handle);
+        public static Error sqlite3_close(sqlite3 db) {
+            GC.SuppressFinalize(db);
+            return (Error)provider.sqlite3_close(db.Handle);
+        }
+        public static Error sqlite3_close_v2(sqlite3 db) {
+            GC.SuppressFinalize(db);
+            return (Error)provider.sqlite3_close_v2(db.Handle);
+        }
 
         public static string sqlite3_errmsg(sqlite3 db) => provider.sqlite3_errmsg(db.Handle);
 
@@ -41,8 +46,10 @@ namespace SQLite {
                 stmt = new sqlite3_stmt(handle, () => provider.sqlite3_finalize(handle));
             return (Error)result;
         }
-        public static Error sqlite3_finalize(sqlite3_stmt stmt) =>
-            (Error)provider.sqlite3_finalize(stmt.Handle);
+        public static Error sqlite3_finalize(sqlite3_stmt stmt) {
+            GC.SuppressFinalize(stmt);
+            return (Error)provider.sqlite3_finalize(stmt.Handle);
+        }
 
         public static StepResult sqlite3_step(sqlite3_stmt stmt) => (StepResult)provider.sqlite3_step(stmt.Handle);
         public static long sqlite3_last_insert_rowid(sqlite3 db) => provider.sqlite3_last_insert_rowid(db.Handle);
