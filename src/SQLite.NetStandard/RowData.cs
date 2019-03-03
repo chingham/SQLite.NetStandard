@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace SQLite {
@@ -8,10 +9,14 @@ namespace SQLite {
             this.statement = statement;
 
             var columnCount = SQLite.sqlite3_column_count(statement);
+            var columns = new List<string>();
             for (var i = 0; i < columnCount; i++) {
                 var name = SQLite.sqlite3_column_name(statement, i);
                 ordinals.Add(name, i);
+                columns.Add(name);
             }
+
+            Columns = new ReadOnlyCollection<string>(columns);
 
             if (cache) {
                 for (var i = 0; i < columnCount; i++) {
@@ -20,6 +25,8 @@ namespace SQLite {
             }
         }
         readonly sqlite3_stmt statement;
+        
+        public IReadOnlyCollection<string> Columns { get; }
 
         readonly Dictionary<string, int> ordinals = new Dictionary<string, int>();
         readonly Dictionary<int, ColumnType> types = new Dictionary<int, ColumnType>();
