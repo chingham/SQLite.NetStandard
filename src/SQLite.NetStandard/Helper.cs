@@ -1,7 +1,3 @@
-using System;
-using System.Diagnostics;
-using System.Reflection;
-
 namespace SQLite {
     using static SQLite;
 	
@@ -9,13 +5,14 @@ namespace SQLite {
         internal static void ThrowIfNeeded(sqlite3 db, int result, int expected, string prefix) {
             if (db != null && result != expected) {
                 
-                string err = null;
                 try {
-                    err = sqlite3_errmsg(db);
+                    var err = sqlite3_errmsg(db);
+                    throw new SQLiteException($"{prefix} : {result} ({(Error)result}) : {err ?? "No error message"}");
                 }
-                catch { }
+                catch {
+                    throw new SQLiteException($"{prefix} : {result} ({(Error)result}) : No error message");
+                }
 
-                throw new SQLiteException($"{prefix} : {result} ({(Error)result}) : {err ?? "No error message"}");
             }
         }
     }

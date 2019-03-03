@@ -3,7 +3,7 @@ using System.Diagnostics;
 using SQLite;
 using UIKit;
 
-namespace Blank {
+namespace Demo.iOS {
     using static SQLite.SQLite;
     
     class MyController : UIViewController {
