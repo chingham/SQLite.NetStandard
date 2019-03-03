@@ -169,7 +169,7 @@ namespace SQLite {
                         stmt.BindParameter(query.Parameters[i], i + 1);
 
                     var result = SQLite.sqlite3_step(stmt);
-                    if (result != StepResult.Done) {
+                    if (result != StepResult.Done && result != StepResult.Row) {
                         var err = SQLite.sqlite3_errmsg(db);
                         throw new SQLiteException(err);
                     }
