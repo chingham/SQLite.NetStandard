@@ -113,116 +113,117 @@ namespace SQLite {
             }
         }
 		
-        //---
+        #region Simplified API
 
-        public static async Task QueryReaderAsync(this sqlite3 db, Query query, Action<RowData> onRow) {
-            await Task.Run(() => {
-                var stmt = db.Prepare(query);
-                try { 
-                    for (var i = 0; i < query.Parameters.Count; i++)
-                        stmt.BindParameter(query.Parameters[i], i + 1);
+        public static Task QueryReaderAsync(this sqlite3 db, Query query, Action<RowData> onRow)
+            => Task.Run(() => QueryReader(db, query, onRow));
+        public static void QueryReader(this sqlite3 db, Query query, Action<RowData> onRow) {
+            var stmt = db.Prepare(query);
+            try { 
+                for (var i = 0; i < query.Parameters.Count; i++)
+                    stmt.BindParameter(query.Parameters[i], i + 1);
 
-                    RowData row = null;
-                    while (true) {
-                        var stepResult = SQLite.sqlite3_step(stmt);
-                        if (stepResult != StepResult.Row)
-                            break;
-                        if (row == null)
-                            row = new RowData(stmt);
-                        else
-                            row.ClearForNewRow();
-                        onRow?.Invoke(row);
-                    }
+                RowData row = null;
+                while (true) {
+                    var stepResult = SQLite.sqlite3_step(stmt);
+                    if (stepResult != StepResult.Row)
+                        break;
+                    if (row == null)
+                        row = new RowData(stmt);
+                    else
+                        row.ClearForNewRow();
+                    onRow?.Invoke(row);
                 }
-                finally {
-                    stmt.Finalize();
-                }
-            }).ConfigureAwait(false);
+            }
+            finally {
+                stmt.Finalize();
+            }
         }
-        public static Task<RowData> QuerySingleAsync(this sqlite3 db, Query query) {
-            return Task.Run(() => {
-                var stmt = db.Prepare(query);
-                try {
-                    for (var i = 0; i < query.Parameters.Count; i++)
-                        stmt.BindParameter(query.Parameters[i], i + 1);
+        
+        public static Task<RowData> QuerySingleAsync(this sqlite3 db, Query query) 
+            => Task.Run(() => QuerySingle(db, query));
+        public static RowData QuerySingle(this sqlite3 db, Query query) {
+            var stmt = db.Prepare(query);
+            try {
+                for (var i = 0; i < query.Parameters.Count; i++)
+                    stmt.BindParameter(query.Parameters[i], i + 1);
 
-                    var result = SQLite.sqlite3_step(stmt);
-                    if (result == StepResult.Row)
-                        return new RowData(stmt, true);
-                    if (result == StepResult.Done)
-                        return null;
-                
+                var result = SQLite.sqlite3_step(stmt);
+                if (result == StepResult.Row)
+                    return new RowData(stmt, true);
+                if (result == StepResult.Done)
+                    return null;
+            
+                var err = SQLite.sqlite3_errmsg(db);
+                throw new SQLiteException(err);
+            }
+            finally {
+                stmt.Finalize();
+            }
+        }
+
+        public static Task ExecuteAsync(this sqlite3 db, Query query) 
+            => Task.Run(() => Execute(db, query));
+        public static void Execute(this sqlite3 db, Query query) {
+            var stmt = db.Prepare(query);
+            try {
+                for (var i = 0; i < query.Parameters.Count; i++)
+                    stmt.BindParameter(query.Parameters[i], i + 1);
+
+                var result = SQLite.sqlite3_step(stmt);
+                if (result != StepResult.Done && result != StepResult.Row) {
                     var err = SQLite.sqlite3_errmsg(db);
                     throw new SQLiteException(err);
                 }
-                finally {
-                    stmt.Finalize();
-                }
-            });
+            }
+            finally {
+                stmt.Finalize();
+            }
         }
 
-        public static async Task ExecuteAsync(this sqlite3 db, Query query) {
-            await Task.Run(() => {
-                var stmt = db.Prepare(query);
-                try {
-                    for (var i = 0; i < query.Parameters.Count; i++)
-                        stmt.BindParameter(query.Parameters[i], i + 1);
-
-                    var result = SQLite.sqlite3_step(stmt);
-                    if (result != StepResult.Done && result != StepResult.Row) {
-                        var err = SQLite.sqlite3_errmsg(db);
-                        throw new SQLiteException(err);
-                    }
-                }
-                finally {
-                    stmt.Finalize();
-                }
-            }).ConfigureAwait(false);
-        }
-
-        public static async Task<bool> TableColumnExistsAsync(this sqlite3 db, string table, string column) {
+        public static Task<bool> TableColumnExistsAsync(this sqlite3 db, string table, string column) 
+            => Task.Run(() => TableColumnExistsAsync(db, table, column));
+        public static bool TableColumnExists(this sqlite3 db, string table, string column) {
             var exists = false;
             var query = $"PRAGMA table_info('{table}')";
-            await db.QueryReaderAsync(query, row => {
+            db.QueryReader(query, row => {
                 var n = row.GetString("name");
                 if (n == column)
                     exists = true;
-            }).ConfigureAwait(false);
+            });
             return exists;
         }
-        public static async Task CreateIndexIfNotExistsAsync(this sqlite3 db, string table, string column) {
-            var exists = await TableColumnExistsAsync(db, table, column).ConfigureAwait(false);
+        
+        public static Task CreateIndexIfNotExistsAsync(this sqlite3 db, string table, string column)
+            => Task.Run(() => CreateIndexIfNotExists(db, table, column));
+        public static void CreateIndexIfNotExists(this sqlite3 db, string table, string column) {
+            var exists = TableColumnExists(db, table, column);
             if (exists)
                 return;
 
             var query = $"CREATE INDEX IF NOT EXISTS {table}_{column} ON {table}({column})";
-            await db.ExecuteAsync(query).ConfigureAwait(false);
+            db.Execute(query);
         }
-        public static async Task AddColumnIfNotExistsAsync(this sqlite3 db, string table, string column, string type) {
-            var exists = await TableColumnExistsAsync(db, table, column).ConfigureAwait(false);
+        
+        public static Task AddColumnIfNotExistsAsync(this sqlite3 db, string table, string column, string type) 
+            => Task.Run(() => AddColumnIfNotExists(db, table, column, type));
+        public static void AddColumnIfNotExists(this sqlite3 db, string table, string column, string type) {
+            var exists = TableColumnExists(db, table, column);
             if (exists)
                 return;
 
-            await Task.Run(() => {
-                var query = $"ALTER TABLE {table} ADD COLUMN {column} {type}";
-                var stmt = db.Prepare(query);
-                try {
-                    var result = SQLite.sqlite3_step(stmt);
-                    if (result != StepResult.Done) {
-                        var err = SQLite.sqlite3_errmsg(db);
-                        throw new SQLiteException("Cannot add column: " + err);
-                    }
+            var query = $"ALTER TABLE {table} ADD COLUMN {column} {type}";
+            var stmt = db.Prepare(query);
+            try {
+                var result = SQLite.sqlite3_step(stmt);
+                if (result != StepResult.Done) {
+                    var err = SQLite.sqlite3_errmsg(db);
+                    throw new SQLiteException("Cannot add column: " + err);
                 }
-                finally {
-                    stmt?.Finalize();
-                }
-            }).ConfigureAwait(false);
-        }
-
-        public static string ProtectForSql(this string str) {
-            if (str == null)
-                return "NULL";
-            return $"'{str.Replace("'", "''")}'";
+            }
+            finally {
+                stmt?.Finalize();
+            }
         }
 
         public static Guid? GetGuid(this RowData row, string name) {
@@ -236,6 +237,16 @@ namespace SQLite {
             if (str == null || str.Length != 36)
                 return null;
             return Guid.TryParse(str, out var id) ? id : (Guid?)null;
+        }
+
+        #endregion
+        
+        //Helpers
+        
+        public static string ProtectForSql(this string str) {
+            if (str == null)
+                return "NULL";
+            return $"'{str.Replace("'", "''")}'";
         }
     }
 }
