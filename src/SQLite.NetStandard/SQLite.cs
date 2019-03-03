@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -17,12 +18,12 @@ namespace SQLite {
         
         public static Error sqlite3_open(string filename, out sqlite3 db) {
             var result = provider.sqlite3_open(filename, out var handle);
-            db = new sqlite3(handle, () => provider.sqlite3_close(handle));
+            db = new sqlite3(handle, false);
             return (Error)result;
         }
         public static Error sqlite3_open_v2(string filename, out sqlite3 db, OpenFlags flags, string vfs) {
             var result = provider.sqlite3_open_v2(filename, out var handle, (int)flags, vfs);
-            db = new sqlite3(handle, () => provider.sqlite3_close_v2(handle));
+            db = new sqlite3(handle, true);
             return (Error)result;
         }
         public static Error sqlite3_close(sqlite3 db) => (Error)provider.sqlite3_close(db.Handle);
@@ -34,7 +35,10 @@ namespace SQLite {
             (Error)provider.sqlite3_exec(db.Handle, command, null, null, out _);
         public static Error sqlite3_prepare_v2(sqlite3 db, string command, out sqlite3_stmt stmt) {
             var result = provider.sqlite3_prepare_v2(db.Handle, command, out var handle, out _);
-            stmt = new sqlite3_stmt(handle, () => provider.sqlite3_finalize(handle));
+            if (handle == IntPtr.Zero)
+                stmt = null;
+            else
+                stmt = new sqlite3_stmt(handle, () => provider.sqlite3_finalize(handle));
             return (Error)result;
         }
         public static Error sqlite3_finalize(sqlite3_stmt stmt) =>
@@ -78,8 +82,16 @@ namespace SQLite {
     }
 
     public sealed class sqlite3 : Resource {
-        internal sqlite3(IntPtr handle, Action disposing) : base(handle, disposing) { }
-        
+        internal sqlite3(IntPtr handle, bool v2) : base(handle, null) {
+            this.v2 = v2;
+        }
+        readonly bool v2;
+
+        protected override void Dispose(bool disposing) {
+            base.Dispose(disposing);
+            Close(this);
+        }
+
         public static sqlite3 Open(string path) {
             if (path == null)
                 throw new ArgumentNullException();
@@ -96,10 +108,9 @@ namespace SQLite {
             if (db == null)
                 throw new ArgumentNullException();
 
-            var result = SQLite.sqlite3_close(db);
+            var result = db.v2 ? SQLite.sqlite3_close_v2(db) : SQLite.sqlite3_close(db);
             Helper.ThrowIfNeeded(db, (int)result, (int)Error.OK, "Unable to close sqlite database");
         }
-        public void Close() => Close(this);
     }
     
     public sealed class sqlite3_stmt : Resource {
