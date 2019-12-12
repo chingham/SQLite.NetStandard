@@ -2,14 +2,14 @@
 
     <PropertyGroup>
         <RootNamespace>SQLite</RootNamespace>
-        <PackageVersion>1.2.1</PackageVersion>
+        <PackageVersion>1.2.2</PackageVersion>
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup>
     	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     	<PackageId>SQLite.NetStandard</PackageId>
-    	<Version>1.1.2</Version>
+    	<Version>1.2.2</Version>
     	<Title>.NetStandard SQLite Abstraction</Title>
     	<Authors>Thomas Guzman</Authors>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
