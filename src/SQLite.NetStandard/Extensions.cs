@@ -164,19 +164,30 @@ namespace SQLite {
         public static Task ExecuteAsync(this sqlite3 db, Query query) 
             => Task.Run(() => Execute(db, query));
         public static void Execute(this sqlite3 db, Query query) {
-            var stmt = db.Prepare(query);
-            try {
-                for (var i = 0; i < query.Parameters.Count; i++)
-                    stmt.BindParameter(query.Parameters[i], i + 1);
-
-                var result = SQLite.sqlite3_step(stmt);
-                if (result != StepResult.Done && result != StepResult.Row) {
+            if (query.Parameters == null || query.Parameters.Count == 0) {
+                //Parameter less execute
+                var result = SQLite.sqlite3_exec(db, query.Command);
+                if (result != Error.OK) {
                     var err = SQLite.sqlite3_errmsg(db);
                     throw new SQLiteException(err);
                 }
             }
-            finally {
-                stmt.Finalize();
+            else {
+                //With parameters to bind
+                var stmt = db.Prepare(query);
+                try {
+                    for (var i = 0; i < query.Parameters.Count; i++)
+                        stmt.BindParameter(query.Parameters[i], i + 1);
+
+                    var result = SQLite.sqlite3_step(stmt);
+                    if (result != StepResult.Done && result != StepResult.Row) {
+                        var err = SQLite.sqlite3_errmsg(db);
+                        throw new SQLiteException(err);
+                    }
+                }
+                finally {
+                    stmt.Finalize();
+                }
             }
         }
 
