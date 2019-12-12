@@ -164,7 +164,7 @@ namespace SQLite {
             return sqlite3_clear_bindings(stmt);
         }
         int ISQLiteProvider.sqlite3_reset(IntPtr stmt) {
-            return sqlite3_clear_bindings(stmt);
+            return sqlite3_reset(stmt);
         }
         string ISQLiteProvider.sqlite3_column_name(IntPtr stmt, int index) {
             var ptr = sqlite3_column_name(stmt, index);
