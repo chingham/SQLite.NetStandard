@@ -70,18 +70,28 @@ namespace SQLite {
                 throw new SQLiteException("An unknown error occured: " + ex.Message, ex);
             }
         }
-        public static void Reset(this sqlite3_stmt stmt, sqlite3 db) {
+        public static void ClearBindings(this sqlite3_stmt stmt, sqlite3 db) {
             var result = SQLite.sqlite3_clear_bindings(stmt);
             if (result != Error.OK) {
                 var err = SQLite.sqlite3_errmsg(db);
                 throw new SQLiteException(err);
             }
-            
-            result = SQLite.sqlite3_reset(stmt);
+        }
+        public static void Reset(this sqlite3_stmt stmt, sqlite3 db) {
+            var result = SQLite.sqlite3_reset(stmt);
             if (result != Error.OK) {
                 var err = SQLite.sqlite3_errmsg(db);
                 throw new SQLiteException(err);
             }
+        }
+        public static bool Step(this sqlite3_stmt stmt, sqlite3 db) {
+            var result = SQLite.sqlite3_step(stmt);
+            if (result != StepResult.Row && result != StepResult.Done) {
+                var err = SQLite.sqlite3_errmsg(db);
+                throw new SQLiteException(err);
+            }
+
+            return result == StepResult.Done;
         }
 
         public static byte[] GetBytes(this sqlite3_stmt stmt, int index) {
