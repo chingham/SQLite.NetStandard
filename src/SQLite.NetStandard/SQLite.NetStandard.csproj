@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <RootNamespace>SQLite</RootNamespace>
-        <PackageVersion>1.2.0</PackageVersion>
+        <PackageVersion>1.2.1</PackageVersion>
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
 
