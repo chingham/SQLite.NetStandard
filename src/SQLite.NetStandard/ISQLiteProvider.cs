@@ -23,6 +23,8 @@ namespace SQLite {
         int sqlite3_bind_int64(IntPtr stmt, int index, long val);
         int sqlite3_bind_null(IntPtr stmt, int index);
         int sqlite3_bind_text(IntPtr stmt, int index, string text);
+        int sqlite3_clear_bindings(IntPtr stmt);
+        int sqlite3_reset(IntPtr stmt);
         string sqlite3_column_name(IntPtr stmt, int index);
         string sqlite3_column_text(IntPtr stmt, int index);
         int sqlite3_column_count(IntPtr stmt);

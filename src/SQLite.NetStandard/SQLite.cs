@@ -72,6 +72,11 @@ namespace SQLite {
             (Error)provider.sqlite3_bind_blob(stmt.Handle, index, value);
         public static Error sqlite3_bind_text(sqlite3_stmt stmt, int index, string value) =>
             (Error)provider.sqlite3_bind_text(stmt.Handle, index, value);
+        
+        public static Error sqlite3_clear_bindings(sqlite3_stmt stmt) =>
+            (Error)provider.sqlite3_clear_bindings(stmt.Handle);
+        public static Error sqlite3_reset(sqlite3_stmt stmt) =>
+            (Error)provider.sqlite3_reset(stmt.Handle);
 
         public static int sqlite3_column_int(sqlite3_stmt stmt, int index) =>
             provider.sqlite3_column_int(stmt.Handle, index);

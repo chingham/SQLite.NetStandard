@@ -58,6 +58,12 @@ namespace SQLite {
         static extern int sqlite3_bind_text(IntPtr stmt, int index, byte[] text, int len, IntPtr reserved);
 
         [DllImport(SqliteDll, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
+        static extern int sqlite3_clear_bindings(IntPtr stmt);
+
+        [DllImport(SqliteDll, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
+        static extern int sqlite3_reset(IntPtr stmt);
+
+        [DllImport(SqliteDll, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
         static extern IntPtr sqlite3_column_name(IntPtr stmt, int index);
 
         [DllImport(SqliteDll, ExactSpelling = true, CallingConvention = CallingConvention.Cdecl)]
@@ -153,6 +159,12 @@ namespace SQLite {
         }
         int ISQLiteProvider.sqlite3_bind_text(IntPtr stmt, int index, string text) {
             return sqlite3_bind_text(stmt, index, text.ToUTF8Bytes(), -1, new IntPtr(-1));
+        }
+        int ISQLiteProvider.sqlite3_clear_bindings(IntPtr stmt) {
+            return sqlite3_clear_bindings(stmt);
+        }
+        int ISQLiteProvider.sqlite3_reset(IntPtr stmt) {
+            return sqlite3_clear_bindings(stmt);
         }
         string ISQLiteProvider.sqlite3_column_name(IntPtr stmt, int index) {
             var ptr = sqlite3_column_name(stmt, index);

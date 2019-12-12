@@ -13,7 +13,7 @@ namespace SQLite {
             catch (Exception ex) {
                 throw new SQLiteException("An unknown error occured: " + ex.Message, ex);
             }
-            Helper.ThrowIfNeeded(db, (int)result, (int)Error.OK, "Unable to prepare sqlite statement");
+            Helper.ThrowIfNeeded(db, (int)result, (int)Error.OK, $"Unable to prepare sqlite statement\n{query}\n");
 
             return stmt;
         }
@@ -68,6 +68,19 @@ namespace SQLite {
             catch (NotSupportedException) { throw; }
             catch (Exception ex) {
                 throw new SQLiteException("An unknown error occured: " + ex.Message, ex);
+            }
+        }
+        public static void Reset(this sqlite3_stmt stmt, sqlite3 db) {
+            var result = SQLite.sqlite3_clear_bindings(stmt);
+            if (result != Error.OK) {
+                var err = SQLite.sqlite3_errmsg(db);
+                throw new SQLiteException(err);
+            }
+            
+            result = SQLite.sqlite3_reset(stmt);
+            if (result != Error.OK) {
+                var err = SQLite.sqlite3_errmsg(db);
+                throw new SQLiteException(err);
             }
         }
 
